@@ -1,9 +1,10 @@
 import './App.css';
+import RegisterAppointment from './pages/registerAppointment';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello!</h1>
+      <RegisterAppointment />
     </div>
   );
 }
