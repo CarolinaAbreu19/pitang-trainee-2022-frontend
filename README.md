@@ -1,6 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Front-end - Pitang | Program Trainee 2022
 
 ## Available Scripts
 
@@ -11,60 +9,42 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Description
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Given the current scenario, there is a huge demand for people to take the vaccine to
+the COVID-19. And with that our city is in need of a simple system to carry out
+the appointments.
+The process consists of creating a portal where it will be possible to schedule patients for
+take the vaccine, build a page to consult the appointments made per day and hour.
 
-### `npm run build`
+## Usage rules
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Availability of places is 20 per day.
+* Each time only has the availability of 2 appointments for the same time.
+* A page must be created to consult the appointments.
+* The result of the appointments must be grouped by the day and time of the appointment.
+* The time interval between one appointment and another is 1 hour.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Business rules
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* The patient must inform his name, date of birth and day and time for the appointment.
+* It must be checked if the form has been filled out.
+* Patient data/schedules must be stored in memory.
+* It must be possible to view the list of appointments made and inform whether the appointment was made or not, and what was the conclusion of the service (if it was performed).
 
-### `npm run eject`
+## Execution rules
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Build an API in Node to receive data from the portal.
+* Use yup to validate data in the API.
+* Use yup for data validation
+* IDE is your choice.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Rating criteria
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Code organization
+* Organization of commits
+* Repository organization
+* Enforcement of all established rules
+* Creating tests
