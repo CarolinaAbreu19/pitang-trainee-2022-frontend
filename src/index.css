@@ -1,3 +1,7 @@
+html {
+  font-size: 62.5%;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -14,4 +18,24 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+button, a, input {
+  all: unset;
+}
+
+button, a {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 95rem) {
+  html {
+    font-size: 60%;
+  }
+}
+
+@media only screen and (max-width: 65rem) {
+  html {
+    font-size: 58%;
+  }
 }
