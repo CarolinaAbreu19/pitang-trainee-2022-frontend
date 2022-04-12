@@ -36,9 +36,8 @@ take the vaccine, build a page to consult the appointments made per day and hour
 
 ## Execution rules
 
-* Build an API in Node to receive data from the portal.
-* Use yup to validate data in the API.
-* Use yup for data validation
+* Build an portal in React to make the appointments.
+* Use Formik for data validation
 * IDE is your choice.
 
 ## Rating criteria
