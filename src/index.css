@@ -1,3 +1,13 @@
+:root {
+  --white: #FFFFFF;
+  --cream-dark: #E8E8E8;
+  --cream-light: #FDFAFA;
+  --dark: #232323;
+  --red: #C40404;
+  --green: #04b958;
+  --blue: #0481c4;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -14,4 +24,12 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+button, a, input {
+  all: unset;
+}
+
+button, a {
+  cursor: pointer;
 }
