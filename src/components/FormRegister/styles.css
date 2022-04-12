@@ -16,8 +16,8 @@
 }
 
 .form__datepicker, .form__input {
-    border: 1px solid #E8E8E8;
-    background: #FDFAFA;
+    border: 1px solid var(--cream-dark);
+    background: var(--cream-light);
     border-radius: 5px;
     padding: 8px 15px;
     width: 500px;
@@ -25,7 +25,7 @@
 
 .form__datepicker:focus, .form__input:focus {
     transition: 0.5s;
-    box-shadow: 0 0 0.5em #232323;
+    box-shadow: 0 0 0.5em var(--black);
 }
 
 .form__label {
@@ -33,7 +33,7 @@
 }
 
 .form__button, .button__time-appointment {
-    color: #FFFFFF;
+    color: var(--white);
     font-weight: 700;
     text-align: center;
     text-transform: uppercase;
@@ -50,17 +50,17 @@
 .--required::after {
     content: ' *';
     font-weight: 300;
-    color: #c40404;
+    color: var(--red);
 }
 
 .--time-appointment {
-    background: #0481c4;
+    background: var(--blue);
 }
 
 .--cancel {
-    background: #c40404;
+    background: var(--red);
 }
 
 .--confirm {
-    background: #04b958;
+    background: var(--green);
 }
