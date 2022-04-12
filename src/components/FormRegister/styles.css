@@ -32,8 +32,7 @@
     font-weight: 500;
 }
 
-.form__button {
-    
+.form__button, .button__time-appointment {
     color: #FFFFFF;
     font-weight: 700;
     text-align: center;
@@ -48,8 +47,18 @@
     opacity: 0.7;
 }
 
+.--required::after {
+    content: ' *';
+    font-weight: 300;
+    color: #c40404;
+}
+
+.--time-appointment {
+    background: #0481c4;
+}
+
 .--cancel {
-    background: #c40404
+    background: #c40404;
 }
 
 .--confirm {

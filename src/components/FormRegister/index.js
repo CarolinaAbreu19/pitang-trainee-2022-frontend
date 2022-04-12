@@ -7,8 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import ErrorMessage from '../ErrorMessage';
 
 const FormRegister = () => {
-    const [birthDate, setBirthDate] = useState(new Date());
-    const [dateAppointment, setDateAppointment] = useState(new Date());
+    const [birthDate, setBirthDate] = useState();
+    const [dateAppointment, setDateAppointment] = useState();
     const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, 8));
     const [newAppointment, setNewAppointment] = useState({
         name: '',
@@ -53,25 +53,44 @@ const FormRegister = () => {
         })
     }
 
+    const handleRegisterUser = async () => {
+        try {
+            const body = newAppointment;
+
+            const response = await fetch("http://localhost:3333/appointment", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            });
+    
+            const data = await response.json();
+            console.log(data.message)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const handleSubmit = () => {
         setError({
             name: newAppointment.name.length === 0,
             birth_date: !birthDate,
             date_appointment: !dateAppointment,
-            time_appointment: !timeAppointment
-        })
+        });
         console.log(newAppointment);
+        handleRegisterUser();
     }
 
     return (
         <form action="" className='form__container' onSubmit={e => e.preventDefault()}>
             <div className="form__field">
-                <label htmlFor="name" className='form__label'>Nome</label>
+                <label htmlFor="name" className='form__label --required'>Nome</label>
                 <input type="text" id='name' className='form__input' onChange={e => handleChange(e, 'name')} />
                  { error.name && <ErrorMessage message="O campo nome é obrigatório" />}
             </div>
             <div className="form__field">
-                <label htmlFor="birth__date" className='form__label'>Data de nascimento</label>
+                <label htmlFor="birth__date" className='form__label --required'>Data de nascimento</label>
                 <DatePicker
                     className='form__datepicker'
                     id='birth__date'
@@ -87,7 +106,7 @@ const FormRegister = () => {
                 { error.birth_date && <ErrorMessage message="O campo data de nascimento é obrigatório" /> }
             </div>
             <div className="form__field">
-                <label htmlFor="date_appointment" className='form__label'>Dia do agendamento</label>
+                <label htmlFor="date_appointment" className='form__label --required'>Dia do agendamento</label>
                 <DatePicker
                     className='form__datepicker'
                     id='date_appointment'
@@ -104,7 +123,7 @@ const FormRegister = () => {
             </div>
             <div className="form__field">
                 <label htmlFor="time_appointment" className='form__label'>Horário do agendamento</label>
-                <button className="example-custom-input" onClick={handleClick}>
+                <button className="form__button --time-appointment" id='time_appointment' onClick={handleClick}>
                     {format(timeAppointment, "HH:mm")}
                 </button>
                 {isOpen && (      
@@ -112,7 +131,6 @@ const FormRegister = () => {
                     selected={timeAppointment}
                     onChange={e => { setTimeAppointment(e); handleChange(e, 'time_appointment') }}
                     className='form__datepicker'
-                    id='time_appointment'
                     showTimeSelect
                     showTimeSelectOnly
                     strictParsing
@@ -125,7 +143,6 @@ const FormRegister = () => {
                     maxTime={(new Date(2022, 0, 1, 17))}
                 />  
                 )}
-                { error.time_appointment && <ErrorMessage message="O campo horário do agendamento é obrigatório" /> }
             </div>
             <div className="button__field">
                 <button className='form__button --confirm' type='submit' onClick={() => handleSubmit()}>Agendar</button>
