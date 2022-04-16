@@ -1,11 +1,3 @@
-.new-appointment-button__container {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-
-    padding: 10vh 10vw 0;
-}
-
 .button__new-appointment {
     background: var(--blue);
     color: var(--white);
