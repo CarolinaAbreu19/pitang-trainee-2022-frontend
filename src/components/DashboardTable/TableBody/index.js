@@ -1,6 +1,8 @@
 import './styles.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import button__edit from '../../../assets/button_edit_table.svg';
+import button__delete from '../../../assets/button_delete_table.svg';
 
 const TableBody = () => {
 
@@ -33,8 +35,8 @@ const TableBody = () => {
                     <td className='table__element'>{appointment.time_appointment}h</td>
                     <td className={`table__element ${appointment.situation === 'waiting' ? '--waiting' : '--done'}`}>{appointment.situation === 'waiting' ? 'Em espera' : 'Atendido'}</td>
                     <td className='table__element action__buttons'>
-                        <button>Editar</button>
-                        <button>Excluir</button>
+                        <button className='table__button'><img src={button__edit} alt="Editar agendamento" /></button>
+                        <button className='table__button'><img src={button__delete} alt="Excluir agendamento" /></button>
                     </td>
                 </tr>
             ))}
