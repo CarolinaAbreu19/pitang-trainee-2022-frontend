@@ -6,6 +6,7 @@ const TableHead = () => {
             <th className='table__row'>
                 <td className='table__head__element'>ID</td>
                 <td className='table__head__element'>Nome</td>
+                <td className='table__head__element'>Data de nascimento</td>
                 <td className='table__head__element'>Dia do agendamento</td>
                 <td className='table__head__element'>Horário do agendamento</td>
                 <td className='table__head__element'>Situação</td>

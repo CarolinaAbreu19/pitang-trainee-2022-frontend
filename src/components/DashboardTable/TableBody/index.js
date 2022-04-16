@@ -28,6 +28,7 @@ const TableBody = () => {
                 <tr className='table__row' key={appointment.id}>
                     <td className='table__element --id'>{appointment.id}</td>
                     <td className='table__element'>{appointment.name}</td>
+                    <td className='table__element'>{appointment.birth_date}</td>
                     <td className='table__element'>{appointment.date_appointment}</td>
                     <td className='table__element'>{appointment.time_appointment}h</td>
                     <td className={`table__element ${appointment.situation === 'waiting' ? '--waiting' : '--done'}`}>{appointment.situation === 'waiting' ? 'Em espera' : 'Atendido'}</td>
