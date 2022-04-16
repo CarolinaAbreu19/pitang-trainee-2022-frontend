@@ -29,7 +29,7 @@ const TableBody = () => {
                     <td className='table__element --id'>{appointment.id}</td>
                     <td className='table__element'>{appointment.name}</td>
                     <td className='table__element'>{appointment.date_appointment}</td>
-                    <td className='table__element'>{appointment.time_appointment}</td>
+                    <td className='table__element'>{appointment.time_appointment}h</td>
                     <td className={`table__element ${appointment.situation === 'waiting' ? '--waiting' : '--done'}`}>{appointment.situation}</td>
                     <td className='table__element action__buttons'>
                         <button>Editar</button>
