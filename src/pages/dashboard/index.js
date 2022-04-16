@@ -1,16 +1,16 @@
 import DashboardTable from '../../components/DashboardTable';
-import { Link } from "react-router-dom";
 import './styles.css';
+import ButtonNewAppointment from '../../components/ButtonNewAppointment';
 
 const Dashboard = () => {    
     return (
         <div className="dashboard__container">
-            <div className="new-appointment-button__container">
-                <button className='button__new-appointment'>
-                    <Link to="/register">Novo agendamento</Link>
-                </button>
+            <div className="dashboard__header">
+                <ButtonNewAppointment />
             </div>
-            <DashboardTable />
+            <div className="dashboard__body">
+                <DashboardTable />
+            </div>
         </div>
     );
 }
