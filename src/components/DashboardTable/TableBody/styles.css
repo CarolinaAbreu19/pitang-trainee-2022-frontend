@@ -45,6 +45,6 @@
 }
 
 .--done {
-    color: var(--green);
+    color: var(--green-dark);
     background-color: var(--green-light);
 }
