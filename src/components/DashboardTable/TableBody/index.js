@@ -25,12 +25,16 @@ const TableBody = () => {
     return (
         <tbody className="table__body">
             { appointmentsData.map((appointment) => (
-                <tr className='table__row'>
-                    <td className='table__element'>{appointment.id}</td>
-                    <td>{appointment.name}</td>
-                    <td>{appointment.date_appointment}</td>
-                    <td>{appointment.time_appointment}</td>
-                    <td>{appointment.situation}</td>
+                <tr className='table__row' key={appointment.id}>
+                    <td className='table__element --id'>{appointment.id}</td>
+                    <td className='table__element'>{appointment.name}</td>
+                    <td className='table__element'>{appointment.date_appointment}</td>
+                    <td className='table__element'>{appointment.time_appointment}</td>
+                    <td className={`table__element ${appointment.situation === 'waiting' ? '--waiting' : '--done'}`}>{appointment.situation}</td>
+                    <td className='table__element action__buttons'>
+                        <button>Editar</button>
+                        <button>Excluir</button>
+                    </td>
                 </tr>
             ))}
         </tbody>

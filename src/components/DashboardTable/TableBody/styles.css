@@ -1,0 +1,50 @@
+.table__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    padding: 20px 60px;
+}
+
+.table__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray);
+}
+
+.table__element {
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    width: 8rem;
+}
+
+.action__buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.--waiting, .--done {
+    border-radius: 15px;
+    padding: 5px 12px;
+
+    max-width: 5rem;
+    
+    font-weight: 300;
+    text-align: center;
+}
+
+.--waiting {
+    color: var(--red);
+    background-color: var(--red-light);
+}
+
+.--done {
+    color: var(--green);
+    background-color: var(--green-light);
+}
