@@ -5,6 +5,8 @@ import pt from 'date-fns/locale/pt';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ErrorMessage from '../ErrorMessage';
+import { Link } from "react-router-dom";
+
 
 const FormRegister = () => {
     const [birthDate, setBirthDate] = useState();
@@ -146,7 +148,7 @@ const FormRegister = () => {
             </div>
             <div className="button__field">
                 <button className='form__button --confirm' type='submit' onClick={() => handleSubmit()}>Agendar</button>
-                <button className='form__button --cancel'>Cancelar</button>
+                <button className='form__button --cancel'><Link to="/">Cancelar</Link></button>
             </div>
         </form>
     );
