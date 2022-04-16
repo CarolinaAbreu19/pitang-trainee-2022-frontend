@@ -23,17 +23,17 @@ const TableBody = () => {
 
 
     return (
-        <div className="table__body">
+        <tbody className="table__body">
             { appointmentsData.map((appointment) => (
-                <tbody>
-                    <td>{appointment.id}</td>
+                <tr className='table__row'>
+                    <td className='table__element'>{appointment.id}</td>
                     <td>{appointment.name}</td>
                     <td>{appointment.date_appointment}</td>
                     <td>{appointment.time_appointment}</td>
                     <td>{appointment.situation}</td>
-                </tbody>
+                </tr>
             ))}
-        </div>
+        </tbody>
     );
 }
 
