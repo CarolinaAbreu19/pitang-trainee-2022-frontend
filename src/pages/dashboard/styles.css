@@ -1,0 +1,7 @@
+.dashboard__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 10vh 10vw 0;
+}

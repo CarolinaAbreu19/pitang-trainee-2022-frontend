@@ -1,0 +1,36 @@
+.table__element {
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 8rem;
+}
+
+.action__buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.table__button img {
+    width: 2rem;
+}
+
+.--waiting, .--done {
+    border-radius: 15px;
+    padding: 5px 12px;
+
+    max-width: 5rem;
+    
+    font-weight: 300;
+    text-align: center;
+}
+
+.--waiting {
+    color: var(--red);
+    background-color: var(--red-light);
+}
+
+.--done {
+    color: var(--green-dark);
+    background-color: var(--green-light);
+}

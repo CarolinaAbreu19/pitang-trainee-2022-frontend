@@ -16,6 +16,7 @@
 }
 
 .form__datepicker, .form__input {
+    all: unset;
     border: 1px solid var(--cream-dark);
     background: var(--cream-light);
     border-radius: 5px;
