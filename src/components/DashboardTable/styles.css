@@ -14,7 +14,13 @@
     gap: 1rem;
 }
 
+.table__head {
+    font-weight: 700;
+}
+
 .table__row {
+    all: unset;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
