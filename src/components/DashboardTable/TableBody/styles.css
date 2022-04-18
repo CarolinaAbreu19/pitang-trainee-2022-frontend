@@ -8,11 +8,12 @@
 
 .action__buttons {
     display: flex;
+    align-items: center;
     justify-content: space-evenly;
 }
 
 .table__button img {
-    width: 2rem;
+    width: 2.5rem;
 }
 
 .--waiting, .--done {
