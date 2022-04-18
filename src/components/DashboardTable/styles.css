@@ -20,6 +20,7 @@
 
 .table__row {
     all: unset;
+    list-style-type: none;
 
     display: flex;
     align-items: center;
