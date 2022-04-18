@@ -25,12 +25,31 @@
     width: 45vw;
 }
 
-.modal__hide {
-    all: unset;
+.modal__title {
+    font-size: 12px;
+    color: var(--orange);
 
-    position: absolute;
-    right: 40px;
-    top: 30px;
+    margin-bottom: 1rem;
+}
 
-    font-size: 18px;
+.modal__buttons {
+    display: flex;
+    gap: 1rem;
+
+    margin-top: 3rem;
+}
+
+.modal__button {
+    border-radius: 4px;
+    padding: 0.5px 39px;
+}
+
+.--no {
+    background-color: var(--red-light);
+    color: var(--red);
+}
+
+.--yes {
+    background-color: var(--green-light);
+    color: var(--green-dark);
 }
