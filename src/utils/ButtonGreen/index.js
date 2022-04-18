@@ -2,7 +2,7 @@ import './styles.css';
 
 const ButtonGreen = (props) => {
     return (
-        <button className='button__green'>{props.innerText}</button>
+        <button className='button__green' onClick={props.onClick}>{props.value}</button>
     );
 }
 
