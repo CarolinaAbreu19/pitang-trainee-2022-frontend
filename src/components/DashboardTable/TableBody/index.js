@@ -1,22 +1,16 @@
 import './styles.css';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import button__delete from '../../../assets/button_delete_table.svg';
 import button__attend from '../../../assets/button_attend_table.svg';
+import useAppointmentProvider from '../../../hooks/useAppointmentProvider';
 
 const TableBody = () => {
 
-    const [appointmentsData, setAppointmentsData] = useState([]);
     const [deleteAppointment, setDeleteAppointment] = useState(false);
+    const { appointmentsData, loadAppointments } = useAppointmentProvider();
 
     useEffect(() => {
         try {
-            async function loadAppointments() {
-                const response = await fetch('http://localhost:3333/appointment', {
-                    method: 'GET'
-                });
-                const data = await response.json();
-                setAppointmentsData(data.appointments);
-            }
             loadAppointments();
         } catch (error) {
             console.log(error);
