@@ -1,20 +1,22 @@
 import './App.css';
 import Dashboard from './pages/dashboard';
 import RegisterAppointment from './pages/registerAppointment';
-import { Routes, Route, Link, BrowserRouter } from 'react-router-dom';
-import Context from './contexts/Context';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import AppointmentProvider from './contexts/Context';
+
 
 function App() {
   return (
     <div className="App">
-      <Context.Provider>
+      <AppointmentProvider>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Dashboard />} />
             <Route path='/register' element={<RegisterAppointment />} />
           </Routes>
         </BrowserRouter>
-      </Context.Provider>
+      </AppointmentProvider>
+      
     </div>
   );
 }
