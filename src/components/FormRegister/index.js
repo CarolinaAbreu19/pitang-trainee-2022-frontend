@@ -8,9 +8,11 @@ import ErrorMessage from '../../utils/ErrorMessage';
 import { Link } from "react-router-dom";
 import ButtonGreen from '../../utils/ButtonGreen';
 import ButtonRed from '../../utils/ButtonRed';
+import useAppointmentProvider from '../../hooks/useAppointmentProvider';
 
 
 const FormRegister = () => {
+    const { appointmentsData, registerAppointment } = useAppointmentProvider();
     const [birthDate, setBirthDate] = useState();
     const [dateAppointment, setDateAppointment] = useState();
     const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, 8));
@@ -57,7 +59,7 @@ const FormRegister = () => {
         })
     }
 
-    const handleRegisterUser = async () => {
+    const handleRegisterAppointment = async () => {
         try {
             const body = newAppointment;
             const response = await fetch("http://localhost:3333/appointment", {
@@ -80,7 +82,7 @@ const FormRegister = () => {
             birth_date: !birthDate,
             date_appointment: !dateAppointment,
         });
-        handleRegisterUser();
+        handleRegisterAppointment();
     }
 
     return (
