@@ -3,14 +3,10 @@ import { useEffect, useState } from 'react';
 import button__delete from '../../../assets/button_delete_table.svg';
 import button__attend from '../../../assets/button_attend_table.svg';
 import useAppointmentProvider from '../../../hooks/useAppointmentProvider';
+import NoResults from '../NoResults';
 
 const TableBody = (props) => {
     const [deleteAppointment, setDeleteAppointment] = useState(false);
-    const { appointmentsData, loadAppointments, filterData, setFilterData } = useAppointmentProvider();
-
-    useEffect(() => {
-        console.log(filterData);
-    }, []);
 
     function handleDelete() {
         !deleteAppointment ? setDeleteAppointment(true) : setDeleteAppointment(false);
@@ -18,7 +14,7 @@ const TableBody = (props) => {
 
     return (
         <div className="table__body">
-            { props.list.map((appointment) => (
+            { props.list.length !== 0 ? props.list.map((appointment) => (
                     <ul className='table__row' key={appointment.id}>
                         <li className='table__element --id'>{appointment.id}</li>
                         <li className='table__element'>{appointment.name}</li>
@@ -31,7 +27,7 @@ const TableBody = (props) => {
                             <button className='table__button --delete' onClick={() => handleDelete()}><img src={button__delete} alt="Cancelar agendamento" /></button>
                         </li>
                     </ul>
-                ))
+                )) : <NoResults />
             }
         </div>
     );
