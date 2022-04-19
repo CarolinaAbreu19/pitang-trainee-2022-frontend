@@ -4,6 +4,7 @@ import { useLocalStorage } from "react-use";
 const useAppointmentProvider = () => {
     const [modalFilterDate, setModalFilterDate] = useState(false);
     const [modalFilterTime, setModalFilterTime] = useState(false);
+    const [newAppointmentData, setNewAppointmentData, removeNewAppointmentData] = useLocalStorage('newAppointment', {});
     const [appointmentsData, setAppointmentsData, removeAppointmentsData] = useLocalStorage('storage', {});
     const [filterData, setFilterData, removeFilterData] = useLocalStorage('filter', {})
 
@@ -66,7 +67,10 @@ const useAppointmentProvider = () => {
         loadAppointments,
         filterAppointments,
         filterData,
-        setFilterData
+        setFilterData,
+        newAppointmentData,
+        setNewAppointmentData,
+        removeNewAppointmentData
     }
 }
 
