@@ -1,9 +1,9 @@
 import './styles.css';
 
-const ErrorMessage = (message) => {
+const ErrorMessage = (props) => {
     return (
         <>
-            <label htmlFor="" className='error__message'>{message.message}</label>
+            <label htmlFor="" className='error__message'>{props.message}</label>
         </>
     );
 }
