@@ -8,14 +8,16 @@ import DatePicker from "react-datepicker";
 import { getHours, getDay, getDate, getMonth, getYear, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { useState } from 'react';
+import FilterTable from '../../components/FilterTable';
 
 
 const Dashboard = () => {
 
-    const { modalFilterDate, toggleModalFilterDate, modalFilterTime, toggleModalFilterTime } = useAppointmentProvider();
+    const { modalFilterDate, toggleModalFilterDate, modalFilterTime, toggleModalFilterTime, filterAppointments, filterData } = useAppointmentProvider();
     const [dateAppointment, setDateAppointment] = useState();
     const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, 8));
     const [isOpen, setIsOpen] = useState(false);
+    const [isFiltered, setIsFiltered] = useState(false);
 
     const isWeekday = (date) => {
         const day = getDay(date);
@@ -27,8 +29,20 @@ const Dashboard = () => {
         setIsOpen(!isOpen);
     };
 
-    const filterResults = (filter, value) => {
-        console.log(filter, value)
+    const filterResults = async (filter, value) => {
+        if(filter === 'time') {
+            value = getHours(value);
+        } else {
+            value = [ getDate(value), (getMonth(value)+1), getYear(value) ].join('/');
+        }
+
+        try {
+            filterAppointments(filter, value);
+            setIsFiltered(true);
+            console.log(isFiltered);
+        } catch (error) {
+            console.log(error);
+        }
     }
     
     return (
@@ -45,7 +59,7 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className="dashboard__body">
-                <DashboardTable />
+                { isFiltered ? <FilterTable list={filterData} /> : <DashboardTable /> }
             </div>
 
             {modalFilterDate && 
@@ -68,7 +82,7 @@ const Dashboard = () => {
                 </div>
                 <div className="modal__buttons">
                     <button className='modal__button --no' onClick={() => toggleModalFilterDate()}>Cancelar</button>
-                    <button className='modal__button --yes'>Filtrar</button>
+                    <button className='modal__button --yes' onClick={() => filterResults('date', dateAppointment)}>Filtrar</button>
                 </div>
             </ModalContainer>}
 
@@ -101,7 +115,7 @@ const Dashboard = () => {
                 </div>
                 <div className="modal__buttons">
                     <button className='modal__button --no' onClick={() => toggleModalFilterTime()}>Cancelar</button>
-                    <button className='modal__button --yes'>Filtrar</button>
+                    <button className='modal__button --yes' onClick={() => filterResults('time', timeAppointment)}>Filtrar</button>
                 </div>
             </ModalContainer>}
         </div>
