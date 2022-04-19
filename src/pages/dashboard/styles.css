@@ -5,3 +5,8 @@
 
     padding: 10vh 10vw 0;
 }
+
+.search__buttons {
+    display: flex;
+    gap: 1rem;
+}

@@ -4,17 +4,12 @@ import button__delete from '../../../assets/button_delete_table.svg';
 import button__attend from '../../../assets/button_attend_table.svg';
 import useAppointmentProvider from '../../../hooks/useAppointmentProvider';
 
-const TableBody = () => {
+const TableBody = (props) => {
     const [deleteAppointment, setDeleteAppointment] = useState(false);
-    const { appointmentsData, loadAppointments, setFilterData } = useAppointmentProvider();
-    
+    const { appointmentsData, loadAppointments, filterData, setFilterData } = useAppointmentProvider();
+
     useEffect(() => {
-        try {
-            setFilterData([]);
-            loadAppointments();
-        } catch (error) {
-            console.log(error);
-        }
+        console.log(filterData);
     }, []);
 
     function handleDelete() {
@@ -23,7 +18,7 @@ const TableBody = () => {
 
     return (
         <div className="table__body">
-            { appointmentsData.map((appointment) => (
+            { props.list.map((appointment) => (
                     <ul className='table__row' key={appointment.id}>
                         <li className='table__element --id'>{appointment.id}</li>
                         <li className='table__element'>{appointment.name}</li>

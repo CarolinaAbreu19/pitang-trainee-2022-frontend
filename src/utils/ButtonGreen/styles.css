@@ -1,0 +1,17 @@
+.button__green {
+    background: var(--green);
+    color: var(--white);
+
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    
+    border-radius: 8px;
+    padding: 16px 20px;
+    max-width: 200px;
+    transition: 0.5s;
+}
+
+.button__green:hover {
+    opacity: 0.8;
+}

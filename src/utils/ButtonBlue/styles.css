@@ -1,4 +1,4 @@
-.button__new-appointment {
+.button__blue {
     background: var(--blue);
     color: var(--white);
 
@@ -12,6 +12,6 @@
     transition: 0.5s;
 }
 
-.button__new-appointment:hover {
+.button__blue:hover {
     opacity: 0.8;
 }

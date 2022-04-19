@@ -4,11 +4,15 @@ import { getHours, getDay, getDate, getMonth, getYear, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../../utils/ErrorMessage';
 import { Link } from "react-router-dom";
+import ButtonGreen from '../../utils/ButtonGreen';
+import ButtonRed from '../../utils/ButtonRed';
+import useAppointmentProvider from '../../hooks/useAppointmentProvider';
 
 
 const FormRegister = () => {
+    const { appointmentsData, registerAppointment } = useAppointmentProvider();
     const [birthDate, setBirthDate] = useState();
     const [dateAppointment, setDateAppointment] = useState();
     const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, 8));
@@ -55,10 +59,9 @@ const FormRegister = () => {
         })
     }
 
-    const handleRegisterUser = async () => {
+    const handleRegisterAppointment = async () => {
         try {
             const body = newAppointment;
-
             const response = await fetch("http://localhost:3333/appointment", {
                 method: "POST",
                 headers: {
@@ -66,9 +69,8 @@ const FormRegister = () => {
                 },
                 body: JSON.stringify(body)
             });
-    
             const data = await response.json();
-            console.log(data.message)
+            console.log(data.message);
         } catch (error) {
             console.error(error);
         }
@@ -80,8 +82,7 @@ const FormRegister = () => {
             birth_date: !birthDate,
             date_appointment: !dateAppointment,
         });
-        console.log(newAppointment);
-        handleRegisterUser();
+        handleRegisterAppointment();
     }
 
     return (
@@ -147,8 +148,10 @@ const FormRegister = () => {
                 )}
             </div>
             <div className="button__field">
-                <button className='form__button --confirm' type='submit' onClick={() => handleSubmit()}>Agendar</button>
-                <button className='form__button --cancel'><Link to="/">Cancelar</Link></button>
+                <ButtonGreen className='form__button --confirm' type='submit' onClick={() => handleSubmit()} value="Agendar" />
+                <Link to="/">
+                    <ButtonRed value="Cancelar" />
+                </Link>
             </div>
         </form>
     );

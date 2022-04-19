@@ -15,9 +15,3 @@
     box-shadow: 0 0 10px 0 var(--dark-gray);
     width: 100%;
 }
-
-.searchbar__options {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
