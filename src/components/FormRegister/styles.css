@@ -57,11 +57,3 @@
 .--time-appointment {
     background: var(--blue);
 }
-
-.--cancel {
-    background: var(--red);
-}
-
-.--confirm {
-    background: var(--green);
-}
