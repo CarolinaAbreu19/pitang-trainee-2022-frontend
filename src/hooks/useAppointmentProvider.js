@@ -5,16 +5,30 @@ const useAppointmentProvider = () => {
     const [modalFilterDate, setModalFilterDate] = useState(false);
     const [modalFilterTime, setModalFilterTime] = useState(false);
     const [alertMessage, setAlertMessage] = useState(false);
+    const [alertStatus, setAlertStatus] = useState({
+        alert: '',
+        message: ''
+    })
 
-    const [newAppointmentData, setNewAppointmentData, removeNewAppointmentData] = useLocalStorage('newAppointment', {});
-    const [appointmentsData, setAppointmentsData, removeAppointmentsData] = useLocalStorage('storage', {});
-    const [filterData, setFilterData, removeFilterData] = useLocalStorage('filter', {})
+    const [newAppointmentData, setNewAppointmentData] = useLocalStorage('newAppointment', {});
+    const [appointmentsData, setAppointmentsData] = useLocalStorage('storage', {});
+    const [filterData, setFilterData] = useLocalStorage('filter', {});
 
     const toggleModalFilterDate = () => {
         modalFilterDate ? setModalFilterDate(false) : setModalFilterDate(true);
     }
     const toggleModalFilterTime = () => {
         modalFilterTime ? setModalFilterTime(false) : setModalFilterTime(true);
+    }
+
+    const toggleAlertMessage = () => {
+        if(!alertMessage) {
+            setAlertMessage(true);
+            const showAlert = setInterval(() => {
+                setAlertMessage(false);
+                clearInterval(showAlert);
+            }, 3000);
+        }
     }
 
     const registerAppointment = async (newAppointment) => {
@@ -28,7 +42,7 @@ const useAppointmentProvider = () => {
                 body: JSON.stringify(body)
             });
             const data = await response.json();
-            setAppointmentsData(body);
+            checkData(data);
         } catch (error) {
             console.error(error);
         }
@@ -56,6 +70,25 @@ const useAppointmentProvider = () => {
         }
     }
 
+    const checkData = (data) => {
+        if(data.appointment) {
+            setAlertStatus({
+                alert: 'success',
+                message: 'Novo agendamento registrado!'
+            });
+        } else if(data.error === 'date_error') {
+            setAlertStatus({
+                alert: 'error',
+                message: 'Não há mais agendamentos disponíveis neste dia'
+            });
+        } else if(data.error === 'time_error') {
+            setAlertStatus({
+                alert: 'error',
+                message: 'Não há mais agendamentos disponíveis neste horário'
+            });
+        }
+    }
+
     return {
         modalFilterDate,
         setModalFilterDate,
@@ -63,18 +96,19 @@ const useAppointmentProvider = () => {
         setModalFilterTime,
         appointmentsData,
         setAppointmentsData,
-        toggleModalFilterDate,
-        toggleModalFilterTime,
-        registerAppointment,
-        loadAppointments,
-        filterAppointments,
         filterData,
         setFilterData,
         newAppointmentData,
         setNewAppointmentData,
-        removeNewAppointmentData,
         alertMessage,
-        setAlertMessage
+        setAlertMessage,
+        alertStatus,
+        toggleModalFilterDate,
+        toggleModalFilterTime,
+        toggleAlertMessage,
+        registerAppointment,
+        loadAppointments,
+        filterAppointments,
     }
 }
 
