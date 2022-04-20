@@ -6,11 +6,12 @@ import useAppointmentProvider from '../../../hooks/useAppointmentProvider';
 
 const TableBody = () => {
     const [deleteAppointment, setDeleteAppointment] = useState(false);
-    const { appointmentsData, loadAppointments, setFilterData } = useAppointmentProvider();
+    const { appointmentsData, loadAppointments, setFilterData, setNewAppointmentData } = useAppointmentProvider();
     
     useEffect(() => {
         try {
             setFilterData([]);
+            setNewAppointmentData({});
             loadAppointments();
         } catch (error) {
             console.log(error);
