@@ -8,22 +8,28 @@ import ErrorMessage from '../../utils/ErrorMessage';
 import { Link } from "react-router-dom";
 import ButtonGreen from '../../utils/ButtonGreen';
 import ButtonRed from '../../utils/ButtonRed';
+import ButtonBlue from '../../utils/ButtonBlue';
 import useAppointmentProvider from '../../hooks/useAppointmentProvider';
+import AlertMessage from '../../utils/AlertMessage';
 
 
 const FormRegister = () => {
-    const { appointmentsData, registerAppointment } = useAppointmentProvider();
+    const { newAppointmentData, setNewAppointmentData, alertMessage, toggleAlertMessage, registerAppointment, alertStatus } = useAppointmentProvider();
+
     const [birthDate, setBirthDate] = useState();
     const [dateAppointment, setDateAppointment] = useState();
-    const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, 8));
+    const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, newAppointmentData.time_appointment || 8));
+
+    const [error, setError] = useState({});
+    const [isOpen, setIsOpen] = useState(false);
+    
     const [newAppointment, setNewAppointment] = useState({
-        name: '',
+        name: newAppointmentData.name || '',
         birth_date: [ getDate(birthDate), (getMonth(birthDate)+1) , getYear(birthDate) ].join('/'),
         date_appointment: [ getDate(dateAppointment), (getMonth(dateAppointment)+1) , getYear(dateAppointment) ].join('/'),
         time_appointment: getHours(timeAppointment)
     });
-    const [error, setError] = useState({});
-    const [isOpen, setIsOpen] = useState(false);
+    
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -37,6 +43,7 @@ const FormRegister = () => {
 
     const handleChange = (event, name) => {
         if(name === 'name') {
+            setNewAppointmentData({ ...newAppointmentData, name: event.target.value });
             setNewAppointment({
                 ...newAppointment,
                 name: event.target.value
@@ -46,6 +53,7 @@ const FormRegister = () => {
 
         if(name === 'time_appointment') {
             setIsOpen(!isOpen);
+            setNewAppointmentData({ ...newAppointmentData, time_appointment: getHours(event) });
             setNewAppointment({
                 ...newAppointment,
                 time_appointment: getHours(event)
@@ -56,24 +64,12 @@ const FormRegister = () => {
         setNewAppointment({
             ...newAppointment,
             [name]: [ getDate(event), (getMonth(event)+1), getYear(event) ].join('/')
-        })
-    }
+        });
 
-    const handleRegisterAppointment = async () => {
-        try {
-            const body = newAppointment;
-            const response = await fetch("http://localhost:3333/appointment", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body)
-            });
-            const data = await response.json();
-            console.log(data.message);
-        } catch (error) {
-            console.error(error);
-        }
+        setNewAppointmentData({
+            ...newAppointmentData,
+            [name]: [ getDate(event), (getMonth(event)+1), getYear(event) ].join('/')
+        });
     }
 
     const handleSubmit = () => {
@@ -82,14 +78,22 @@ const FormRegister = () => {
             birth_date: !birthDate,
             date_appointment: !dateAppointment,
         });
-        handleRegisterAppointment();
+        registerAppointment(newAppointment);
+        if(alertStatus.alert && alertStatus.message) {
+            toggleAlertMessage();
+        }
     }
 
     return (
         <form action="" className='form__container' onSubmit={e => e.preventDefault()}>
+            <div className="button__field .--back">
+                <Link to="/">
+                    <ButtonBlue value="Voltar" />
+                </Link>
+            </div>
             <div className="form__field">
                 <label htmlFor="name" className='form__label --required'>Nome</label>
-                <input type="text" id='name' className='form__input' onChange={e => handleChange(e, 'name')} />
+                <input type="text" id='name' className='form__input' onChange={e => handleChange(e, 'name')} value={newAppointmentData.name} />
                  { error.name && <ErrorMessage message="O campo nome é obrigatório" />}
             </div>
             <div className="form__field">
@@ -102,7 +106,10 @@ const FormRegister = () => {
                     dateFormat="dd/MM/yyyy"
                     maxDate={new Date()}
                     selected={birthDate} 
-                    onChange={e => { setBirthDate(e); handleChange(e, 'birth_date') }}
+                    onChange={e => { 
+                        setBirthDate(e); 
+                        handleChange(e, 'birth_date');
+                    }}
                     fixedHeight
                     strictParsing
                 />
@@ -118,7 +125,10 @@ const FormRegister = () => {
                     minDate={new Date()}
                     filterDate={isWeekday}
                     selected={dateAppointment} 
-                    onChange={e => { setDateAppointment(e); handleChange(e, 'date_appointment') }}
+                    onChange={e => { 
+                        setDateAppointment(e);
+                        handleChange(e, 'date_appointment');
+                    }}
                     fixedHeight 
                     strictParsing
                 />
@@ -153,6 +163,7 @@ const FormRegister = () => {
                     <ButtonRed value="Cancelar" />
                 </Link>
             </div>
+            {alertMessage && <AlertMessage alert={alertStatus.alert} message={alertStatus.message} />}
         </form>
     );
 }
