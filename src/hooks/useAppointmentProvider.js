@@ -21,7 +21,6 @@ const useAppointmentProvider = () => {
     const toggleModalFilterTime = () => {
         modalFilterTime ? setModalFilterTime(false) : setModalFilterTime(true);
     }
-
     const toggleAlertMessage = () => {
         if(!alertMessage) {
             setAlertMessage(true);
