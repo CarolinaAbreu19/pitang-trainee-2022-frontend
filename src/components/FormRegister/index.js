@@ -10,21 +10,26 @@ import ButtonGreen from '../../utils/ButtonGreen';
 import ButtonRed from '../../utils/ButtonRed';
 import ButtonBlue from '../../utils/ButtonBlue';
 import useAppointmentProvider from '../../hooks/useAppointmentProvider';
+import AlertMessage from '../../utils/AlertMessage';
 
 
 const FormRegister = () => {
-    const { newAppointmentData, setNewAppointmentData } = useAppointmentProvider();
+    const { newAppointmentData, setNewAppointmentData, alertMessage, toggleAlertMessage, registerAppointment, alertStatus } = useAppointmentProvider();
+
     const [birthDate, setBirthDate] = useState();
     const [dateAppointment, setDateAppointment] = useState();
     const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, newAppointmentData.time_appointment || 8));
+
+    const [error, setError] = useState({});
+    const [isOpen, setIsOpen] = useState(false);
+    
     const [newAppointment, setNewAppointment] = useState({
         name: newAppointmentData.name || '',
         birth_date: [ getDate(birthDate), (getMonth(birthDate)+1) , getYear(birthDate) ].join('/'),
         date_appointment: [ getDate(dateAppointment), (getMonth(dateAppointment)+1) , getYear(dateAppointment) ].join('/'),
         time_appointment: getHours(timeAppointment)
     });
-    const [error, setError] = useState({});
-    const [isOpen, setIsOpen] = useState(false);
+    
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -67,29 +72,16 @@ const FormRegister = () => {
         });
     }
 
-    const handleRegisterAppointment = async () => {
-        try {
-            const body = newAppointment;
-            const response = await fetch("http://localhost:3333/appointment", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body)
-            });
-            const data = await response.json();
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
     const handleSubmit = () => {
         setError({
             name: newAppointment.name.length === 0,
             birth_date: !birthDate,
             date_appointment: !dateAppointment,
         });
-        handleRegisterAppointment();
+        registerAppointment(newAppointment);
+        if(alertStatus.alert && alertStatus.message) {
+            toggleAlertMessage();
+        }
     }
 
     return (
@@ -171,6 +163,7 @@ const FormRegister = () => {
                     <ButtonRed value="Cancelar" />
                 </Link>
             </div>
+            {alertMessage && <AlertMessage alert={alertStatus.alert} message={alertStatus.message} />}
         </form>
     );
 }
