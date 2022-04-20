@@ -1,5 +1,5 @@
 import './styles.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getHours, getDay, getDate, getMonth, getYear, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import DatePicker from "react-datepicker";
@@ -8,6 +8,7 @@ import ErrorMessage from '../../utils/ErrorMessage';
 import { Link } from "react-router-dom";
 import ButtonGreen from '../../utils/ButtonGreen';
 import ButtonRed from '../../utils/ButtonRed';
+import ButtonBlue from '../../utils/ButtonBlue';
 import useAppointmentProvider from '../../hooks/useAppointmentProvider';
 
 
@@ -17,7 +18,7 @@ const FormRegister = () => {
     const [dateAppointment, setDateAppointment] = useState();
     const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, newAppointmentData.time_appointment || 8));
     const [newAppointment, setNewAppointment] = useState({
-        name: newAppointmentData.name,
+        name: newAppointmentData.name || '',
         birth_date: [ getDate(birthDate), (getMonth(birthDate)+1) , getYear(birthDate) ].join('/'),
         date_appointment: [ getDate(dateAppointment), (getMonth(dateAppointment)+1) , getYear(dateAppointment) ].join('/'),
         time_appointment: getHours(timeAppointment)
@@ -93,6 +94,11 @@ const FormRegister = () => {
 
     return (
         <form action="" className='form__container' onSubmit={e => e.preventDefault()}>
+            <div className="button__field .--back">
+                <Link to="/">
+                    <ButtonBlue value="Voltar" />
+                </Link>
+            </div>
             <div className="form__field">
                 <label htmlFor="name" className='form__label --required'>Nome</label>
                 <input type="text" id='name' className='form__input' onChange={e => handleChange(e, 'name')} value={newAppointmentData.name} />
