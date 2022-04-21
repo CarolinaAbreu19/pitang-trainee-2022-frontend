@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocalStorage } from "react-use";
 import axios from "axios";
+import { getDate, getMonth, getYear } from 'date-fns';
 
 const useAppointmentProvider = () => {
     const [modalFilterDate, setModalFilterDate] = useState(false);
@@ -66,6 +67,18 @@ const useAppointmentProvider = () => {
         }
     }
 
+    const validateDate = (dateValue) => {
+        const newDate = [];
+        if(typeof(dateValue) === 'string') {
+            return dateValue;
+        }
+
+        getDate(dateValue).toString().length === 1 ? newDate.push(`0${getDate(dateValue)}`) : newDate.push(getDate(dateValue).toString());
+        getMonth(dateValue).toString().length === 1 ? newDate.push(`0${getMonth(dateValue)+1}`) : newDate.push((getMonth(dateValue)+1).toString());
+        newDate.push(getYear(dateValue).toString());
+        return newDate.join('/');
+    }
+
     return {
         modalFilterDate,
         setModalFilterDate,
@@ -86,6 +99,7 @@ const useAppointmentProvider = () => {
         registerAppointment,
         loadAppointments,
         filterAppointments,
+        validateDate
     }
 }
 
