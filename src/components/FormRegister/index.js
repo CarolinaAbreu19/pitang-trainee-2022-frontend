@@ -16,54 +16,17 @@ import { useFormik, Formik, useFormikContext, useField } from 'formik';
 const FormRegister = () => {
     const { newAppointmentData, setNewAppointmentData, alertMessage, toggleAlertMessage, registerAppointment, alertStatus } = useAppointmentProvider();
 
-    const [birthDate, setBirthDate] = useState();
-    const [dateAppointment, setDateAppointment] = useState();
-    const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, newAppointmentData.time_appointment || 8));
-
-    const [error, setError] = useState({});
-    const [isOpen, setIsOpen] = useState(false);
-    
-    const [newAppointment, setNewAppointment] = useState({
-        name: newAppointmentData.name || '',
-        birth_date: [ getDate(birthDate), (getMonth(birthDate)+1) , getYear(birthDate) ].join('/'),
-        date_appointment: [ getDate(dateAppointment), (getMonth(dateAppointment)+1) , getYear(dateAppointment) ].join('/'),
-        time_appointment: getHours(timeAppointment)
+    const [error, setError] = useState({
+        name: false,
+        birth_date: false,
+        date_appointment: false
     });
-    
-    const formik = useFormik({
-        initialValues: {
-            name: newAppointment.name || '',
-            birth_date: '',
-            date_appointment: '',
-            time_appointment: new Date(2022, 5, 11, newAppointmentData.time_appointment || 8)
-        },
-        onSubmit: values => {
 
-            // [ getDate(parseISO(formik.values.birth_date)), (getMonth(parseISO(formik.values.birth_date))+1) , getYear(parseISO(formik.values.birth_date)) ].join('/')
-            
-            const body = {
-                name: newAppointmentData.name || formik.values.name,
-                birth_date: parseISO(formik.values.birth_date),
-                date_appointment: parseISO(formik.values.date_appointment),
-                time_appointment: getHours(formik.values.time_appointment)
-            }
-
-            console.log(body);
-
-            setError({
-                name: !formik.values.name,
-                birth_date: !formik.values.birth_date,
-                date_appointment: !formik.values.date_appointment,
-            });
-
-            if(body.name && body.birth_date && body.date_appointment && body.time_appointment) {
-                registerAppointment(body);
-            }
-            
-            if(alertStatus.alert && alertStatus.message) {
-                toggleAlertMessage();
-            }
-        }
+    const [isOpen, setIsOpen] = useState(false);
+    const [localField, setLocalField] = useState({
+        name: '',
+        date_appointment: '',
+        time_appointment: new Date(2022, 5, 11, newAppointmentData.time_appointment || 8)
     });
 
     const DatePickerField = ({ ...props }) => {
@@ -76,10 +39,23 @@ const FormRegister = () => {
             selected={(field.value && new Date(field.value)) || null}
             onChange={(val) => {
               setFieldValue(field.name, val);
+
+              // Can't do this to birth_date and date_appointment
+              if(field.name === 'birth_date') {
+                  setNewAppointmentData({ ...newAppointmentData, birth_date: new Date(val) });
+              }
+
+              if(field.name === 'date_appointment') {
+                  setLocalField({ ...localField, date_appointment: new Date(val) });
+              }
+              
               if(field.name === 'time_appointment') {
-                  setTimeAppointment(val);
+                  setNewAppointmentData({ ...newAppointmentData, time_appointment: getHours(val) });
+                //   setTimeAppointment(val);
+                    setLocalField({ ...localField, time_appointment: val });
                   setIsOpen(!isOpen);
               }
+
             }}
           />
         );
@@ -95,49 +71,45 @@ const FormRegister = () => {
         return day !== 0 && day !== 6;
     }
 
-    const handleChange = (event, name) => {
-        if(name === 'name') {
-            setNewAppointmentData({ ...newAppointmentData, name: event.target.value });
-            setNewAppointment({
-                ...newAppointment,
-                name: event.target.value
-            });
-            return;
+    const validateDate = (dateValue) => {
+        const newDate = [];
+        if(typeof(dateValue) === 'string') {
+            return dateValue;
         }
 
-        if(name === 'time_appointment') {
-            setIsOpen(!isOpen);
-            setNewAppointmentData({ ...newAppointmentData, time_appointment: getHours(event) });
-            setNewAppointment({
-                ...newAppointment,
-                time_appointment: getHours(event)
-            });
-            return;
-        }
-
-        setNewAppointment({
-            ...newAppointment,
-            [name]: [ getDate(event), (getMonth(event)+1), getYear(event) ].join('/')
-        });
-
-        setNewAppointmentData({
-            ...newAppointmentData,
-            [name]: [ getDate(event), (getMonth(event)+1), getYear(event) ].join('/')
-        });
+        getDate(dateValue).toString().length === 1 ? newDate.push(`0${getDate(dateValue)}`) : newDate.push(getDate(dateValue).toString());
+        getMonth(dateValue).toString().length === 1 ? newDate.push(`0${getMonth(dateValue)+1}`) : newDate.push((getMonth(dateValue)+1).toString());
+        newDate.push(getYear(dateValue).toString());
+        return newDate.join('/');
     }
 
     return (
         <div>
             <Formik
                 initialValues={{
-                    name: newAppointment.name || '',
-                    birth_date: '',
+                    name: newAppointmentData.name || localField.name,
+                    birth_date: newAppointmentData.birth_date ? (newAppointmentData.birth_date).split('T')[0].split('-').reverse().join('/') : '',
                     date_appointment: '',
                     time_appointment: new Date(2022, 5, 11, newAppointmentData.time_appointment || 8)
                 }}
 
                 onSubmit={values => {
-                    console.log(values)
+                    setError({
+                        name: !newAppointmentData.name,
+                        birth_date: !values.birth_date,
+                        date_appointment: !values.date_appointment
+                    });
+                    
+                    const body = {
+                        name: newAppointmentData.name,
+                        birth_date: validateDate(values.birth_date),
+                        date_appointment: validateDate(localField.date_appointment),
+                        time_appointment: getHours(values.time_appointment)
+                    }
+
+                    if(body.name && body.birth_date && body.date_appointment) {
+                        registerAppointment(body);
+                    }
                 }}
             >
 
@@ -153,7 +125,7 @@ const FormRegister = () => {
                         </div>
                         <div className="form__field">
                             <label htmlFor="name" className='form__label --required'>Nome</label>
-                            <input type="text" id='name' className='form__input' onChange={(e) => { formik.handleChange(); setNewAppointmentData({ ...newAppointmentData, name: e.target.value }); }} value={formik.values.name} />
+                            <input type="text" id='name' className='form__input' onChange={e => {setLocalField({ ...localField, name: e.target.value}); setNewAppointmentData({ ...newAppointmentData, name: e.target.value })}} value={newAppointmentData.name || localField.name} />
                             { error.name && <ErrorMessage message="O campo nome é obrigatório" />}
                         </div>
                         <div className="form__field">
@@ -188,7 +160,7 @@ const FormRegister = () => {
                         <div className="form__field">
                             <label htmlFor="time_appointment" className='form__label'>Horário do agendamento</label>
                             <button className="form__button --time-appointment" id='time_appointment' onClick={handleClick}>
-                                {format(timeAppointment, "HH:mm")}
+                                {format(localField.time_appointment, "HH:mm")}
                             </button>
                             {isOpen && (      
                             <DatePickerField
