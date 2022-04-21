@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useLocalStorage } from "react-use";
+import axios from "axios";
+import { getDate, getMonth, getYear } from 'date-fns';
 
 const useAppointmentProvider = () => {
     const [modalFilterDate, setModalFilterDate] = useState(false);
@@ -20,7 +22,6 @@ const useAppointmentProvider = () => {
     const toggleModalFilterTime = () => {
         modalFilterTime ? setModalFilterTime(false) : setModalFilterTime(true);
     }
-
     const toggleAlertMessage = () => {
         if(!alertMessage) {
             setAlertMessage(true);
@@ -33,60 +34,49 @@ const useAppointmentProvider = () => {
 
     const registerAppointment = async (newAppointment) => {
         try {
-            const body = newAppointment;
-            const response = await fetch("http://localhost:3333/appointment", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body)
-            });
-            const data = await response.json();
-            checkData(data);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const loadAppointments = async () => {
-        const response = await fetch('http://localhost:3333/appointment', {
-            method: 'GET'
-        });
-        const data = await response.json();
-        setAppointmentsData(data.appointments);
-    }
-
-    const filterAppointments = async (filter, value) => {
-        try {
-            const response = await fetch(`http://localhost:3333/appointment?filter=${filter}&value=${value}`, {
-                method: 'GET'
-            });
-            const data = await response.json();
-            setFilterData(data.appointments);
-            setModalFilterDate(false);
-            setModalFilterTime(false);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const checkData = (data) => {
-        if(data.appointment) {
+            const response = await axios.post("http://localhost:3333/appointment", newAppointment);
+            const data = response.data;
             setAlertStatus({
                 alert: 'success',
                 message: 'Novo agendamento registrado!'
             });
-        } else if(data.error === 'date_error') {
-            setAlertStatus({
-                alert: 'error',
-                message: 'Não há mais agendamentos disponíveis neste dia'
-            });
-        } else if(data.error === 'time_error') {
+        } catch (error) {
+            console.error(error);
             setAlertStatus({
                 alert: 'error',
                 message: 'Não há mais agendamentos disponíveis neste horário'
             });
         }
+    }
+
+    const loadAppointments = async () => {
+        const response = await axios.get('http://localhost:3333/appointment');
+        const data = response.data;
+        setAppointmentsData(data.appointments);
+    }
+
+    const filterAppointments = async (filter, value) => {
+        try {
+            const response = await axios.get(`http://localhost:3333/appointment?filter=${filter}&value=${value}`);
+            const data = response.data;
+            setFilterData(data.appointments);
+            setModalFilterDate(false);
+            setModalFilterTime(false);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const validateDate = (dateValue) => {
+        const newDate = [];
+        if(typeof(dateValue) === 'string') {
+            return dateValue;
+        }
+
+        getDate(dateValue).toString().length === 1 ? newDate.push(`0${getDate(dateValue)}`) : newDate.push(getDate(dateValue).toString());
+        getMonth(dateValue).toString().length === 1 ? newDate.push(`0${getMonth(dateValue)+1}`) : newDate.push((getMonth(dateValue)+1).toString());
+        newDate.push(getYear(dateValue).toString());
+        return newDate.join('/');
     }
 
     return {
@@ -109,6 +99,7 @@ const useAppointmentProvider = () => {
         registerAppointment,
         loadAppointments,
         filterAppointments,
+        validateDate
     }
 }
 

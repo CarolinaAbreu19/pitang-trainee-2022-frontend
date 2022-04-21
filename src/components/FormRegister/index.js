@@ -1,35 +1,65 @@
 import './styles.css';
-import { useState } from 'react';
-import { getHours, getDay, getDate, getMonth, getYear, format } from 'date-fns';
+import { useState, forwardRef } from 'react';
+import { getHours, getDay, getDate, getMonth, getYear, format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ErrorMessage from '../../utils/ErrorMessage';
 import { Link } from "react-router-dom";
-import ButtonGreen from '../../utils/ButtonGreen';
 import ButtonRed from '../../utils/ButtonRed';
 import ButtonBlue from '../../utils/ButtonBlue';
 import useAppointmentProvider from '../../hooks/useAppointmentProvider';
 import AlertMessage from '../../utils/AlertMessage';
+import { useFormik, Formik, useFormikContext, useField } from 'formik';
 
 
 const FormRegister = () => {
-    const { newAppointmentData, setNewAppointmentData, alertMessage, toggleAlertMessage, registerAppointment, alertStatus } = useAppointmentProvider();
+    const { newAppointmentData, setNewAppointmentData, alertMessage, toggleAlertMessage, registerAppointment, alertStatus, validateDate } = useAppointmentProvider();
 
-    const [birthDate, setBirthDate] = useState();
-    const [dateAppointment, setDateAppointment] = useState();
-    const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, newAppointmentData.time_appointment || 8));
-
-    const [error, setError] = useState({});
-    const [isOpen, setIsOpen] = useState(false);
-    
-    const [newAppointment, setNewAppointment] = useState({
-        name: newAppointmentData.name || '',
-        birth_date: [ getDate(birthDate), (getMonth(birthDate)+1) , getYear(birthDate) ].join('/'),
-        date_appointment: [ getDate(dateAppointment), (getMonth(dateAppointment)+1) , getYear(dateAppointment) ].join('/'),
-        time_appointment: getHours(timeAppointment)
+    const [error, setError] = useState({
+        name: false,
+        birth_date: false,
+        date_appointment: false
     });
-    
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [localField, setLocalField] = useState({
+        name: '',
+        date_appointment: '',
+        time_appointment: new Date(2022, 5, 11, newAppointmentData.time_appointment || 8)
+    });
+
+    const DatePickerField = ({ ...props }) => {
+        const { setFieldValue } = useFormikContext();
+        const [field] = useField(props);
+        return (
+          <DatePicker
+            {...field}
+            {...props}
+            selected={(field.value && new Date(field.value)) || null}
+            onChange={(val) => {
+              setFieldValue(field.name, val);
+
+              // Can't do this to birth_date and date_appointment
+              if(field.name === 'birth_date') {
+                  setNewAppointmentData({ ...newAppointmentData, birth_date: new Date(val) });
+              }
+
+              if(field.name === 'date_appointment') {
+                  setLocalField({ ...localField, date_appointment: new Date(val) });
+              }
+              
+              if(field.name === 'time_appointment') {
+                  setNewAppointmentData({ ...newAppointmentData, time_appointment: getHours(val) });
+                //   setTimeAppointment(val);
+                    setLocalField({ ...localField, time_appointment: val });
+                  setIsOpen(!isOpen);
+              }
+
+            }}
+          />
+        );
+    };
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -41,130 +71,115 @@ const FormRegister = () => {
         return day !== 0 && day !== 6;
     }
 
-    const handleChange = (event, name) => {
-        if(name === 'name') {
-            setNewAppointmentData({ ...newAppointmentData, name: event.target.value });
-            setNewAppointment({
-                ...newAppointment,
-                name: event.target.value
-            });
-            return;
-        }
-
-        if(name === 'time_appointment') {
-            setIsOpen(!isOpen);
-            setNewAppointmentData({ ...newAppointmentData, time_appointment: getHours(event) });
-            setNewAppointment({
-                ...newAppointment,
-                time_appointment: getHours(event)
-            });
-            return;
-        }
-
-        setNewAppointment({
-            ...newAppointment,
-            [name]: [ getDate(event), (getMonth(event)+1), getYear(event) ].join('/')
-        });
-
-        setNewAppointmentData({
-            ...newAppointmentData,
-            [name]: [ getDate(event), (getMonth(event)+1), getYear(event) ].join('/')
-        });
-    }
-
-    const handleSubmit = () => {
-        setError({
-            name: newAppointment.name.length === 0,
-            birth_date: !birthDate,
-            date_appointment: !dateAppointment,
-        });
-        registerAppointment(newAppointment);
-        if(alertStatus.alert && alertStatus.message) {
-            toggleAlertMessage();
-        }
-    }
-
     return (
-        <form action="" className='form__container' onSubmit={e => e.preventDefault()}>
-            <div className="button__field .--back">
-                <Link to="/">
-                    <ButtonBlue value="Voltar" />
-                </Link>
-            </div>
-            <div className="form__field">
-                <label htmlFor="name" className='form__label --required'>Nome</label>
-                <input type="text" id='name' className='form__input' onChange={e => handleChange(e, 'name')} value={newAppointmentData.name} />
-                 { error.name && <ErrorMessage message="O campo nome é obrigatório" />}
-            </div>
-            <div className="form__field">
-                <label htmlFor="birth__date" className='form__label --required'>Data de nascimento</label>
-                <DatePicker
-                    className='form__datepicker'
-                    id='birth__date'
-                    name='birth__date'
-                    locale={pt}
-                    dateFormat="dd/MM/yyyy"
-                    maxDate={new Date()}
-                    selected={birthDate} 
-                    onChange={e => { 
-                        setBirthDate(e); 
-                        handleChange(e, 'birth_date');
-                    }}
-                    fixedHeight
-                    strictParsing
-                />
-                { error.birth_date && <ErrorMessage message="O campo data de nascimento é obrigatório" /> }
-            </div>
-            <div className="form__field">
-                <label htmlFor="date_appointment" className='form__label --required'>Dia do agendamento</label>
-                <DatePicker
-                    className='form__datepicker'
-                    id='date_appointment'
-                    locale={pt}
-                    dateFormat="dd/MM/yyyy"
-                    minDate={new Date()}
-                    filterDate={isWeekday}
-                    selected={dateAppointment} 
-                    onChange={e => { 
-                        setDateAppointment(e);
-                        handleChange(e, 'date_appointment');
-                    }}
-                    fixedHeight 
-                    strictParsing
-                />
-                { error.date_appointment && <ErrorMessage message="O campo dia do agendamento é obrigatório" /> }
-            </div>
-            <div className="form__field">
-                <label htmlFor="time_appointment" className='form__label'>Horário do agendamento</label>
-                <button className="form__button --time-appointment" id='time_appointment' onClick={handleClick}>
-                    {format(timeAppointment, "HH:mm")}
-                </button>
-                {isOpen && (      
-                <DatePicker
-                    selected={timeAppointment}
-                    onChange={e => { setTimeAppointment(e); handleChange(e, 'time_appointment') }}
-                    className='form__datepicker'
-                    showTimeSelect
-                    showTimeSelectOnly
-                    strictParsing
-                    inline
-                    timeIntervals={60}
-                    timeCaption="Horário"
-                    timeFormat="HH:mm"
-                    dateFormat="HH:mm"
-                    minTime={(new Date(2022, 0, 1, 8))}
-                    maxTime={(new Date(2022, 0, 1, 17))}
-                />  
-                )}
-            </div>
-            <div className="button__field">
-                <ButtonGreen className='form__button --confirm' type='submit' onClick={() => handleSubmit()} value="Agendar" />
-                <Link to="/">
-                    <ButtonRed value="Cancelar" />
-                </Link>
-            </div>
-            {alertMessage && <AlertMessage alert={alertStatus.alert} message={alertStatus.message} />}
-        </form>
+        <div>
+            <Formik
+                initialValues={{
+                    name: newAppointmentData.name || localField.name,
+                    birth_date: newAppointmentData.birth_date ? (newAppointmentData.birth_date).split('T')[0].split('-').reverse().join('/') : '',
+                    date_appointment: '',
+                    time_appointment: new Date(2022, 5, 11, newAppointmentData.time_appointment || 8)
+                }}
+
+                onSubmit={values => {
+                    setError({
+                        name: !newAppointmentData.name,
+                        birth_date: !values.birth_date,
+                        date_appointment: !values.date_appointment
+                    });
+                    
+                    const body = {
+                        name: newAppointmentData.name,
+                        birth_date: validateDate(values.birth_date),
+                        date_appointment: validateDate(localField.date_appointment),
+                        time_appointment: getHours(values.time_appointment)
+                    }
+
+                    if(body.name && body.birth_date && body.date_appointment) {
+                        registerAppointment(body);
+                    }
+                }}
+            >
+
+            {(props) => {
+                const { handleSubmit } = props;
+                return (
+                    <form action="" className='form__container' onSubmit={handleSubmit}>
+                        
+                        <div className="button__field .--back">
+                            <Link to="/">
+                                <ButtonBlue value="Voltar" />
+                            </Link>
+                        </div>
+                        <div className="form__field">
+                            <label htmlFor="name" className='form__label --required'>Nome</label>
+                            <input type="text" id='name' className='form__input' onChange={e => {setLocalField({ ...localField, name: e.target.value}); setNewAppointmentData({ ...newAppointmentData, name: e.target.value })}} value={newAppointmentData.name || localField.name} />
+                            { error.name && <ErrorMessage message="O campo nome é obrigatório" />}
+                        </div>
+                        <div className="form__field">
+                            <label htmlFor="birth__date" className='form__label --required'>Data de nascimento</label>                            
+                            <DatePickerField
+                                id="birth__date"
+                                name="birth_date"
+                                className="form__datepicker"
+                                locale={pt}
+                                dateFormat="dd/MM/yyyy"
+                                maxDate={new Date()}
+                                fixedHeight
+                                strictParsing
+                            />
+                            { error.birth_date && <ErrorMessage message="O campo data de nascimento é obrigatório" /> }
+                        </div>
+                        <div className="form__field">
+                            <label htmlFor="date_appointment" className='form__label --required'>Dia do agendamento</label>
+                            <DatePickerField
+                                id='date_appointment'
+                                name="date_appointment"
+                                className='form__datepicker'
+                                locale={pt}
+                                dateFormat="dd/MM/yyyy"
+                                minDate={new Date()}
+                                filterDate={isWeekday}
+                                fixedHeight 
+                                strictParsing
+                            />
+                            { error.date_appointment && <ErrorMessage message="O campo dia do agendamento é obrigatório" /> }
+                        </div>
+                        <div className="form__field">
+                            <label htmlFor="time_appointment" className='form__label'>Horário do agendamento</label>
+                            <button className="form__button --time-appointment" id='time_appointment' onClick={handleClick}>
+                                {format(localField.time_appointment, "HH:mm")}
+                            </button>
+                            {isOpen && (      
+                            <DatePickerField
+                                id='time_appointment'
+                                name='time_appointment'
+                                className='form__datepicker'
+                                timeIntervals={60}
+                                timeCaption="Horário"
+                                timeFormat="HH:mm"
+                                dateFormat="HH:mm"
+                                minTime={(new Date(2022, 0, 1, 8))}
+                                maxTime={(new Date(2022, 0, 1, 17))}
+                                showTimeSelect
+                                showTimeSelectOnly
+                                strictParsing
+                                inline
+                            />  
+                            )}
+                        </div>
+                        <div className="button__field">
+                            <button className='form__button  --submit' type="submit">Agendar</button>
+                            <Link to="/">
+                                <ButtonRed value="Cancelar" />
+                            </Link>
+                        </div>
+                        {alertMessage && <AlertMessage alert={alertStatus.alert} message={alertStatus.message} />}
+                    </form>
+            
+                )}}
+            </Formik>
+        </div>
     );
 }
 
