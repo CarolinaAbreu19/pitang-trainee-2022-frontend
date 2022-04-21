@@ -1,5 +1,5 @@
 import './styles.css';
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { getHours, getDay, getDate, getMonth, getYear, format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import DatePicker from "react-datepicker";
@@ -76,6 +76,10 @@ const FormRegister = () => {
             selected={(field.value && new Date(field.value)) || null}
             onChange={(val) => {
               setFieldValue(field.name, val);
+              if(field.name === 'time_appointment') {
+                  setTimeAppointment(val);
+                  setIsOpen(!isOpen);
+              }
             }}
           />
         );
@@ -149,7 +153,7 @@ const FormRegister = () => {
                         </div>
                         <div className="form__field">
                             <label htmlFor="name" className='form__label --required'>Nome</label>
-                            <input type="text" id='name' className='form__input' onChange={formik.handleChange} value={formik.values.name} />
+                            <input type="text" id='name' className='form__input' onChange={(e) => { formik.handleChange(); setNewAppointmentData({ ...newAppointmentData, name: e.target.value }); }} value={formik.values.name} />
                             { error.name && <ErrorMessage message="O campo nome é obrigatório" />}
                         </div>
                         <div className="form__field">
