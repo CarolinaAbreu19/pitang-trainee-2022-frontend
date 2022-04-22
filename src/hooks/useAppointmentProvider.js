@@ -12,10 +12,7 @@ const useAppointmentProvider = () => {
     const [appointmentsData, setAppointmentsData] = useLocalStorage('storage', {});
     const [filterData, setFilterData] = useLocalStorage('filter', {});
 
-    const [alertStatus, setAlertStatus] = useState({
-        alertType: '',
-        message: ''
-    });
+    const [alertStatus, setAlertStatus] = useState({});
 
     const path = 'http://localhost:3333/appointment';
 
