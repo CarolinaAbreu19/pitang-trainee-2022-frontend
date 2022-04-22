@@ -10,7 +10,6 @@ const TableHead = () => {
                 <li className='table__head__element'>Dia do agendamento</li>
                 <li className='table__head__element'>Horário do agendamento</li>
                 <li className='table__head__element'>Situação</li>
-                <li className='table__head__element'>Ações</li>
             </ul>
         </div>
     );
