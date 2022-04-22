@@ -77,6 +77,15 @@ const useAppointmentProvider = () => {
         }
     }
 
+    const makeAppointment = async (id) => {
+        try {
+            const response = await axios.patch(`http://localhost:3333/appointment/${id}`);
+            loadAppointments();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const deleteAppointment = async (id) => {
         try {
             const response = await axios.delete(`http://localhost:3333/appointment/${id}`);
@@ -119,6 +128,7 @@ const useAppointmentProvider = () => {
         registerAppointment,
         loadAppointments,
         filterAppointments,
+        makeAppointment,
         deleteAppointment,
         validateDate
     }
