@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import useAppointmentProvider from '../../hooks/useAppointmentProvider';
 import ModalContainer from '../../utils/ModalContainer';
 import DatePicker from "react-datepicker";
-import { getHours, getDay, getDate, getMonth, getYear, format } from 'date-fns';
+import { getHours, getDay, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { useState } from 'react';
 import FilterTable from '../../components/FilterTable';
