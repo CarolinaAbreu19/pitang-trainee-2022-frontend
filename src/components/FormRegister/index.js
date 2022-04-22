@@ -174,7 +174,7 @@ const FormRegister = () => {
                                 <ButtonRed value="Cancelar" />
                             </Link>
                         </div>
-                        {alertMessage && <AlertMessage alert={alertStatus.alert} message={alertStatus.message} />}
+                        {alertMessage && <AlertMessage alertType={alertStatus.alertType} message={alertStatus.message} />}
                     </form>
             
                 )}}
