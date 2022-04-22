@@ -5,7 +5,7 @@ import button__attend from '../../../assets/button_attend_table.svg';
 import useAppointmentProvider from '../../../hooks/useAppointmentProvider';
 
 const TableBody = () => {
-    const { appointmentsData, loadAppointments, setFilterData, setNewAppointmentData, deleteAppointment } = useAppointmentProvider();
+    const { appointmentsData, loadAppointments, setFilterData, setNewAppointmentData, makeAppointment, deleteAppointment } = useAppointmentProvider();
     
     useEffect(() => {
         try {
@@ -28,8 +28,12 @@ const TableBody = () => {
                         <li className='table__element'>{appointment.time_appointment}h</li>
                         <li className={`table__element ${appointment.situation === 'waiting' ? '--waiting' : '--done'}`}>{appointment.situation === 'waiting' ? 'Em espera' : 'Atendido'}</li>
                         <li className='table__element action__buttons'>
-                            <button className='table__button --attend'><img src={button__attend} alt="Realizar atendimento" /></button>
-                            <button className='table__button --delete' onClick={() => deleteAppointment(appointment.id)}><img src={button__delete} alt="Cancelar agendamento" /></button>
+                            <button className='table__button --attend' onClick={() => makeAppointment(appointment.id)}>
+                                <img src={button__attend} alt="Realizar atendimento" />
+                            </button>
+                            <button className='table__button --delete' onClick={() => deleteAppointment(appointment.id)}>
+                                <img src={button__delete} alt="Cancelar agendamento" />
+                            </button>
                         </li>
                     </ul>
                 ))
