@@ -1,6 +1,6 @@
+import axios from "axios";
 import { useState } from "react";
 import { useLocalStorage } from "react-use";
-import axios from "axios";
 import { getDate, getMonth, getYear } from 'date-fns';
 
 const useAppointmentProvider = () => {
