@@ -14,7 +14,8 @@ import { Formik, useFormikContext, useField } from 'formik';
 
 
 const FormRegister = () => {
-    const { newAppointmentData, setNewAppointmentData, alertMessage, toggleAlertMessage, registerAppointment, alertStatus, validateDate } = useAppointmentProvider();
+    const { newAppointmentData, setNewAppointmentData, alertMessage, registerAppointment, alertStatus, validateDate } = useAppointmentProvider();
+    const [isOpen, setIsOpen] = useState(false);
 
     const [error, setError] = useState({
         name: false,
@@ -22,7 +23,6 @@ const FormRegister = () => {
         date_appointment: false
     });
 
-    const [isOpen, setIsOpen] = useState(false);
     const [localField, setLocalField] = useState({
         name: '',
         date_appointment: '',
@@ -51,8 +51,7 @@ const FormRegister = () => {
               
               if(field.name === 'time_appointment') {
                   setNewAppointmentData({ ...newAppointmentData, time_appointment: getHours(val) });
-                //   setTimeAppointment(val);
-                    setLocalField({ ...localField, time_appointment: val });
+                  setLocalField({ ...localField, time_appointment: val });
                   setIsOpen(!isOpen);
               }
 
