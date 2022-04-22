@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useLocalStorage } from "react-use";
 import axios from "axios";
-import { getDate, getMonth, getYear, parseISO } from 'date-fns';
+import { getDate, getMonth, getYear, parseISO, set } from 'date-fns';
 
 const useAppointmentProvider = () => {
     const [modalFilterDate, setModalFilterDate] = useState(false);
     const [modalFilterTime, setModalFilterTime] = useState(false);
     const [alertMessage, setAlertMessage] = useState(false);
     const [alertStatus, setAlertStatus] = useState({
-        alert: '',
+        alertType: '',
         message: ''
     })
 
@@ -37,15 +37,24 @@ const useAppointmentProvider = () => {
             const response = await axios.post("http://localhost:3333/appointment", newAppointment);
             const data = response.data;
             setAlertStatus({
-                alert: 'success',
+                alertType: 'success',
                 message: 'Novo agendamento registrado!'
             });
+            toggleAlertMessage();
         } catch (error) {
-            console.error(error);
-            setAlertStatus({
-                alert: 'error',
-                message: 'Não há mais agendamentos disponíveis neste horário'
-            });
+            if(error.response.data.error === 'time_error') {
+                setAlertStatus({
+                    alertType: 'error',
+                    message: 'Não há mais agendamentos disponíveis neste horário'
+                });
+                toggleAlertMessage();
+            } else if(error.response.data.error === 'date_error') {
+                setAlertStatus({
+                    alertType: 'error',
+                    message: 'Não há mais agendamentos disponíveis para este dia'
+                });
+                toggleAlertMessage();
+            }            
         }
     }
 
