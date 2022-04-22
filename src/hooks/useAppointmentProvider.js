@@ -4,17 +4,17 @@ import axios from "axios";
 import { getDate, getMonth, getYear } from 'date-fns';
 
 const useAppointmentProvider = () => {
+    const path = 'http://localhost:3333/appointment';
+    
     const [modalFilterDate, setModalFilterDate] = useState(false);
     const [modalFilterTime, setModalFilterTime] = useState(false);
     const [alertMessage, setAlertMessage] = useState(false);
+    
+    const [alertStatus, setAlertStatus] = useState({});
 
     const [newAppointmentData, setNewAppointmentData] = useLocalStorage('newAppointment', {});
     const [appointmentsData, setAppointmentsData] = useLocalStorage('storage', {});
     const [filterData, setFilterData] = useLocalStorage('filter', {});
-
-    const [alertStatus, setAlertStatus] = useState({});
-
-    const path = 'http://localhost:3333/appointment';
 
     const toggleModalFilterDate = () => {
         modalFilterDate ? setModalFilterDate(false) : setModalFilterDate(true);
