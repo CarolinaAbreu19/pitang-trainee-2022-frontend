@@ -31,15 +31,12 @@ const Dashboard = () => {
 
     const filterResults = async (filter, value) => {
         if(filter === 'time') {
-            value = getHours(value);
-        } else {
-            value = [ getDate(value), (getMonth(value)+1), getYear(value) ].join('/');
+            value = getHours(value).toString();
         }
 
         try {
             filterAppointments(filter, value);
             setIsFiltered(true);
-            console.log(isFiltered);
         } catch (error) {
             console.log(error);
         }
