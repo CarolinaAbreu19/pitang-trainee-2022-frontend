@@ -1,21 +1,23 @@
-import DashboardTable from '../../components/DashboardTable';
 import './styles.css';
-import ButtonBlue from '../../utils/ButtonBlue';
-import { Link } from 'react-router-dom';
-import useAppointmentProvider from '../../hooks/useAppointmentProvider';
-import ModalContainer from '../../utils/ModalContainer';
-import DatePicker from "react-datepicker";
-import { getHours, getDay, getDate, getMonth, getYear, format } from 'date-fns';
-import pt from 'date-fns/locale/pt';
-import { useState } from 'react';
 import FilterTable from '../../components/FilterTable';
+import DashboardTable from '../../components/DashboardTable';
+import ButtonBlue from '../../utils/ButtonBlue';
+import ModalContainer from '../../utils/ModalContainer';
+import useAppointmentProvider from '../../hooks/useAppointmentProvider';
+import DatePicker from "react-datepicker";
+import pt from 'date-fns/locale/pt';
+import { getHours, getDay, format } from 'date-fns';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 
 const Dashboard = () => {
 
     const { modalFilterDate, toggleModalFilterDate, modalFilterTime, toggleModalFilterTime, filterAppointments, filterData } = useAppointmentProvider();
+    
     const [dateAppointment, setDateAppointment] = useState();
     const [timeAppointment, setTimeAppointment] = useState(new Date(2022, 5, 11, 8));
+    
     const [isOpen, setIsOpen] = useState(false);
     const [isFiltered, setIsFiltered] = useState(false);
 

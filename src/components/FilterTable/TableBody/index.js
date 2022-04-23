@@ -1,11 +1,7 @@
 import './styles.css';
-import button__delete from '../../../assets/button_delete_table.svg';
-import button__attend from '../../../assets/button_attend_table.svg';
-import useAppointmentProvider from '../../../hooks/useAppointmentProvider';
 import NoResults from '../NoResults';
 
 const TableBody = (props) => {
-    const { deleteAppointment } = useAppointmentProvider();
 
     return (
         <div className="table__body">

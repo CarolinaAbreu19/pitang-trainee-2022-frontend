@@ -1,16 +1,16 @@
+import axios from "axios";
 import { useState } from "react";
 import { useLocalStorage } from "react-use";
-import axios from "axios";
-import { getDate, getMonth, getYear, parseISO, set } from 'date-fns';
+import { getDate, getMonth, getYear } from 'date-fns';
 
 const useAppointmentProvider = () => {
+    const path = 'http://localhost:3333/appointment';
+    
     const [modalFilterDate, setModalFilterDate] = useState(false);
     const [modalFilterTime, setModalFilterTime] = useState(false);
     const [alertMessage, setAlertMessage] = useState(false);
-    const [alertStatus, setAlertStatus] = useState({
-        alertType: '',
-        message: ''
-    })
+    
+    const [alertStatus, setAlertStatus] = useState({});
 
     const [newAppointmentData, setNewAppointmentData] = useLocalStorage('newAppointment', {});
     const [appointmentsData, setAppointmentsData] = useLocalStorage('storage', {});
@@ -34,7 +34,7 @@ const useAppointmentProvider = () => {
 
     const registerAppointment = async (newAppointment) => {
         try {
-            const response = await axios.post("http://localhost:3333/appointment", newAppointment);
+            const response = await axios.post(path, newAppointment);
             const data = response.data;
             setAlertStatus({
                 alertType: 'success',
@@ -59,7 +59,7 @@ const useAppointmentProvider = () => {
     }
 
     const loadAppointments = async () => {
-        const response = await axios.get('http://localhost:3333/appointment');
+        const response = await axios.get(path);
         const data = response.data;
         setAppointmentsData(data.appointments);
     }
@@ -67,7 +67,7 @@ const useAppointmentProvider = () => {
     const filterAppointments = async (filter, value) => {
         const valueFormat = validateDate(value);
         try {
-            const response = await axios.get(`http://localhost:3333/appointment?filter=${filter}&value=${valueFormat}`);
+            const response = await axios.get(`${path}?filter=${filter}&value=${valueFormat}`);
             const data = response.data;
             setFilterData(data.appointments);
             setModalFilterDate(false);
@@ -79,7 +79,7 @@ const useAppointmentProvider = () => {
 
     const makeAppointment = async (id) => {
         try {
-            const response = await axios.patch(`http://localhost:3333/appointment/${id}`);
+            const response = await axios.patch(`${path}/${id}`);
             loadAppointments();
         } catch (error) {
             console.error(error);
@@ -88,7 +88,7 @@ const useAppointmentProvider = () => {
 
     const deleteAppointment = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:3333/appointment/${id}`);
+            const response = await axios.delete(`${path}/${id}`);
             loadAppointments();
         } catch (error) {
             console.error(error);
@@ -110,21 +110,16 @@ const useAppointmentProvider = () => {
 
     return {
         modalFilterDate,
-        setModalFilterDate,
         modalFilterTime,
-        setModalFilterTime,
         appointmentsData,
-        setAppointmentsData,
         filterData,
         setFilterData,
         newAppointmentData,
         setNewAppointmentData,
         alertMessage,
-        setAlertMessage,
         alertStatus,
         toggleModalFilterDate,
         toggleModalFilterTime,
-        toggleAlertMessage,
         registerAppointment,
         loadAppointments,
         filterAppointments,

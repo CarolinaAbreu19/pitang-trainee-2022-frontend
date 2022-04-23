@@ -1,20 +1,21 @@
 import './styles.css';
-import { useState, forwardRef } from 'react';
-import { getHours, getDay, getDate, getMonth, getYear, format, parseISO } from 'date-fns';
+import "react-datepicker/dist/react-datepicker.css";
 import pt from 'date-fns/locale/pt';
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import ErrorMessage from '../../utils/ErrorMessage';
-import { Link } from "react-router-dom";
 import ButtonRed from '../../utils/ButtonRed';
 import ButtonBlue from '../../utils/ButtonBlue';
-import useAppointmentProvider from '../../hooks/useAppointmentProvider';
 import AlertMessage from '../../utils/AlertMessage';
-import { useFormik, Formik, useFormikContext, useField } from 'formik';
+import useAppointmentProvider from '../../hooks/useAppointmentProvider';
+import { Link } from "react-router-dom";
+import { useState } from 'react'; 
+import { getHours, getDay, format } from 'date-fns';
+import { Formik, useFormikContext, useField } from 'formik';
 
 
 const FormRegister = () => {
-    const { newAppointmentData, setNewAppointmentData, alertMessage, toggleAlertMessage, registerAppointment, alertStatus, validateDate } = useAppointmentProvider();
+    const { newAppointmentData, setNewAppointmentData, alertMessage, registerAppointment, alertStatus, validateDate } = useAppointmentProvider();
+    const [isOpen, setIsOpen] = useState(false);
 
     const [error, setError] = useState({
         name: false,
@@ -22,7 +23,6 @@ const FormRegister = () => {
         date_appointment: false
     });
 
-    const [isOpen, setIsOpen] = useState(false);
     const [localField, setLocalField] = useState({
         name: '',
         date_appointment: '',
@@ -51,8 +51,7 @@ const FormRegister = () => {
               
               if(field.name === 'time_appointment') {
                   setNewAppointmentData({ ...newAppointmentData, time_appointment: getHours(val) });
-                //   setTimeAppointment(val);
-                    setLocalField({ ...localField, time_appointment: val });
+                  setLocalField({ ...localField, time_appointment: val });
                   setIsOpen(!isOpen);
               }
 

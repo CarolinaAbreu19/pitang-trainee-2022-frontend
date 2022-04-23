@@ -35,3 +35,15 @@
     color: var(--green-dark);
     background-color: var(--green-light);
 }
+
+@media screen and (max-width: 1040px) {
+    .table__button img {
+        width: 2rem;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .table__button img {
+        width: 1.5rem;
+    }
+}
