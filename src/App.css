@@ -1,7 +1,9 @@
-.--flex {
-    display: flex;
+.header {
+    background: var(--blue-light);
+    background: linear-gradient(90deg, var(--blue-light) 0%, var(--blue-dark) 94%);
+    height: 10vh;
 }
 
-.--hidden {
-    display: none;
+.header__logo {
+    width: 12vw;
 }
