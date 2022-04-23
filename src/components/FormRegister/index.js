@@ -104,12 +104,6 @@ const FormRegister = () => {
                 const { handleSubmit } = props;
                 return (
                     <form action="" className='form__container' onSubmit={handleSubmit}>
-                        
-                        <div className="button__field .--back">
-                            <Link to="/">
-                                <ButtonBlue value="Voltar" />
-                            </Link>
-                        </div>
                         <div className="form__field">
                             <label htmlFor="name" className='form__label --required'>Nome</label>
                             <input type="text" id='name' className='form__input' onChange={e => {setLocalField({ ...localField, name: e.target.value}); setNewAppointmentData({ ...newAppointmentData, name: e.target.value })}} value={newAppointmentData.name || localField.name} />
