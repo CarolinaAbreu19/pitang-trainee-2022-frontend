@@ -1,0 +1,33 @@
+.alert__container {
+    box-shadow: 0px 4px 42px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+
+    padding: 1rem;
+    width: 30vw;
+
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-weight: 300;
+}
+
+.alert__message {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.--success {
+    background-color: var(--blue-light);
+    color: var(--blue-dark);
+}
+
+.--error {
+    background-color: var(--red-light);
+    color: var(--red);
+}
