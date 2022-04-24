@@ -36,7 +36,7 @@ const FormRegister = () => {
           <DatePicker
             {...field}
             {...props}
-            selected={(field.value && new Date(field.value))}
+            selected={(field.value && new Date(field.value)) || null}
             onChange={(val) => {
               setFieldValue(field.name, val);
 
