@@ -2,11 +2,18 @@
 
 ## Available Scripts
 
-In the project directory, you can run:
+* In the project directory, you can run this code to install the dependencies:
 
-### `npm start`
+```
+npm install
+```
 
-Runs the app in the development mode.\
+* And then, input this command to run the app in the development mode:
+
+```
+npm start
+```
+
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ---
