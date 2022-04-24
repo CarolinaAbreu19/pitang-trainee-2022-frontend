@@ -3,9 +3,10 @@ import { useEffect } from 'react';
 import button__delete from '../../../assets/button_delete_table.svg';
 import button__attend from '../../../assets/button_attend_table.svg';
 import useAppointmentProvider from '../../../hooks/useAppointmentProvider';
+import AlertMessage from '../../../utils/AlertMessage';
 
 const TableBody = () => {
-    const { appointmentsData, loadAppointments, setFilterData, setNewAppointmentData, makeAppointment, deleteAppointment } = useAppointmentProvider();
+    const { appointmentsData, loadAppointments, setFilterData, setNewAppointmentData, makeAppointment, deleteAppointment, alertMessage, alertStatus } = useAppointmentProvider();
     
     useEffect(() => {
         try {
@@ -38,6 +39,7 @@ const TableBody = () => {
                     </ul>
                 ))
             }
+            {alertMessage && <AlertMessage alertType={alertStatus.alertType} message={alertStatus.message} />}
         </div>
 
     );
