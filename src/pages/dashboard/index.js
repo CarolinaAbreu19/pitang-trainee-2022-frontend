@@ -46,6 +46,10 @@ const Dashboard = () => {
     
     return (
         <div className="dashboard__container">
+            <div className="page__description">
+                <h1 className='page__title'>Agendamentos</h1>
+                <h2 className='page__subtitle'>Aqui estão listados todos os agendamentos registrados no sistema</h2>
+            </div>
             <div className="dashboard__header">
                 <div className="search__buttons">
                     <ButtonBlue value="Agrupar por data" onClick={() => toggleModalFilterDate()} />
