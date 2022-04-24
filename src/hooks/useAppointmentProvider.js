@@ -32,28 +32,24 @@ const useAppointmentProvider = () => {
         }
     }
 
+    const notification = (type, message) => {
+        setAlertStatus({
+            alertType: type,
+            message: message
+        });
+        toggleAlertMessage();
+    }
+
     const registerAppointment = async (newAppointment) => {
         try {
             const response = await axios.post(path, newAppointment);
             const data = response.data;
-            setAlertStatus({
-                alertType: 'success',
-                message: 'Novo agendamento registrado!'
-            });
-            toggleAlertMessage();
+            notification('success', 'Novo agendamento registrado!');
         } catch (error) {
             if(error.response.data.error === 'time_error') {
-                setAlertStatus({
-                    alertType: 'error',
-                    message: 'Não há mais agendamentos disponíveis neste horário'
-                });
-                toggleAlertMessage();
+                notification('error', 'Não há mais agendamentos disponíveis neste horário');
             } else if(error.response.data.error === 'date_error') {
-                setAlertStatus({
-                    alertType: 'error',
-                    message: 'Não há mais agendamentos disponíveis para este dia'
-                });
-                toggleAlertMessage();
+                notification('error', 'Não há mais agendamentos disponíveis para este dia');
             }            
         }
     }
@@ -81,18 +77,10 @@ const useAppointmentProvider = () => {
         try {
             const response = await axios.patch(`${path}/${id}`);
             loadAppointments();
-            setAlertStatus({
-                alertType: 'success',
-                message: 'Atendimento realizado!'
-            });
-            toggleAlertMessage();
+            notification('success', 'Atendimento realizado!');
         } catch (error) {
             console.error(error);
-            setAlertStatus({
-                alertType: 'error',
-                message: 'Ooops! Não foi possível atender este paciente'
-            });
-            toggleAlertMessage();
+            notification('error', 'Ooops! Não foi possível atender este paciente');
         }
     }
 
@@ -100,18 +88,10 @@ const useAppointmentProvider = () => {
         try {
             const response = await axios.delete(`${path}/${id}`);
             loadAppointments();
-            setAlertStatus({
-                alertType: 'success',
-                message: 'O agendamento foi cancelado com sucesso'
-            });
-            toggleAlertMessage();
+            notification('success', 'O agendamento foi cancelado com sucesso');
         } catch (error) {
             console.error(error);
-            setAlertStatus({
-                alertType: 'error',
-                message: 'Ooops! Não foi possível cancelar este agendamento'
-            });
-            toggleAlertMessage();
+            notification('error', 'Ooops! Não foi possível cancelar este agendamento');
         }
     }
 
