@@ -81,8 +81,18 @@ const useAppointmentProvider = () => {
         try {
             const response = await axios.patch(`${path}/${id}`);
             loadAppointments();
+            setAlertStatus({
+                alertType: 'success',
+                message: 'Atendimento realizado!'
+            });
+            toggleAlertMessage();
         } catch (error) {
             console.error(error);
+            setAlertStatus({
+                alertType: 'error',
+                message: 'Ooops! Não foi possível atender este paciente'
+            });
+            toggleAlertMessage();
         }
     }
 
