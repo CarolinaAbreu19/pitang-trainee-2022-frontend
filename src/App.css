@@ -5,5 +5,53 @@
 }
 
 .header__logo {
-    width: 12vw;
+    width: 12rem;
+}
+
+.page__description {
+    margin: 3rem 0 0 2rem;
+}
+
+.page__title {
+    display: flex;
+    flex-direction: column;
+    color: var(--blue-dark);
+}
+
+.page__title::after {
+    content: "______________________";
+}
+
+.page__subtitle {
+    color: var(--dark-gray);
+}
+
+@media screen and (max-width: 1040px) {
+    .page__title {
+        font-size: 25px;
+    }
+
+    .page__subtitle {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 848px) {
+    .page__description {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .page__title {
+        font-size: 20px;
+    }
+
+    .page__subtitle {
+        font-size: 15px;
+    }
 }
