@@ -90,8 +90,18 @@ const useAppointmentProvider = () => {
         try {
             const response = await axios.delete(`${path}/${id}`);
             loadAppointments();
+            setAlertStatus({
+                alertType: 'success',
+                message: 'O agendamento foi cancelado com sucesso'
+            });
+            toggleAlertMessage();
         } catch (error) {
             console.error(error);
+            setAlertStatus({
+                alertType: 'error',
+                message: 'Ooops! Não foi possível cancelar este agendamento'
+            });
+            toggleAlertMessage();
         }
     }
 
