@@ -14,7 +14,7 @@ npm install
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser
 
 ---
 
@@ -55,3 +55,9 @@ take the vaccine, build a page to consult the appointments made per day and hour
 * Repository organization
 * Enforcement of all established rules
 * Creating tests
+
+---
+
+## Author
+
+Carolina Abreu - [GitHub Profile](https://github.com/CarolinaAbreu19) | [LinkedIn](https://www.linkedin.com/in/ana-carolina-silva-abreu/)
