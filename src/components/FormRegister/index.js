@@ -4,7 +4,6 @@ import pt from 'date-fns/locale/pt';
 import DatePicker from "react-datepicker";
 import ErrorMessage from '../../utils/ErrorMessage';
 import ButtonRed from '../../utils/ButtonRed';
-import ButtonBlue from '../../utils/ButtonBlue';
 import AlertMessage from '../../utils/AlertMessage';
 import useAppointmentProvider from '../../hooks/useAppointmentProvider';
 import { Link } from "react-router-dom";
