@@ -1,0 +1,25 @@
+.dashboard__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 10vh 10vw 0;
+}
+
+.search__buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+@media screen and (max-width: 848px) {
+    .search__buttons {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 630px) {
+    .dashboard__header {
+        flex-direction: column-reverse;
+        gap: 2.5rem;
+    }
+}

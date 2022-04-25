@@ -1,0 +1,18 @@
+.no-results__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.no-results__message {
+    text-align: center;
+}
+
+.no-results__title {
+    color: var(--red);
+}
+
+.no-results__subtitle {
+    color: var(--dark-gray);
+}
