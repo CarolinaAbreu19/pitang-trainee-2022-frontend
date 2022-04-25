@@ -2,12 +2,20 @@
 
 ## Available Scripts
 
-In the project directory, you can run:
+* In the project directory, you can run this code to install the dependencies:
 
-### `npm start`
+```
+npm install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* And then, input this command to run the app in the development mode:
+
+```
+npm start
+```
+
+* Open [http://localhost:3000](http://localhost:3000) to view it in your browser
+* And make sure the server is running on `port:3333` to run the application correctly
 
 ---
 
@@ -36,8 +44,9 @@ take the vaccine, build a page to consult the appointments made per day and hour
 
 ## Execution rules
 
-* Build an portal in React to make the appointments.
-* Use Formik for data validation
+* Build an API in Node to receive data from the portal.
+* Use yup to validate data in the API.
+* Use yup for data validation
 * IDE is your choice.
 
 ## Rating criteria
@@ -47,3 +56,9 @@ take the vaccine, build a page to consult the appointments made per day and hour
 * Repository organization
 * Enforcement of all established rules
 * Creating tests
+
+---
+
+## Author
+
+Carolina Abreu - [GitHub Profile](https://github.com/CarolinaAbreu19) | [LinkedIn](https://www.linkedin.com/in/ana-carolina-silva-abreu/)
